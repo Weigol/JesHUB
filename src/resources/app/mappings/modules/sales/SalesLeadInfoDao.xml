@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinajes.bizhub.modules.sales.dao.SalesLeadInfoDao">
+    
+	<sql id="salesLeadInfoColumns">
+		a.lead_id AS "leadId",
+		a.company_id AS "companyId",
+		a.company_name AS "companyName",
+		a.contact_id AS "contactId",
+		a.contact_name AS "contactName",
+		a.principal AS "principal",
+		a.biz_line AS "bizLine",
+		a.product_id AS "productId",
+		a.leads_src AS "leadsSrc",
+		a.leads_desc AS "leadsDesc",
+		a.lead_status AS "leadStatus",
+		a.estimate_amt AS "estimateAmt",
+		a.agreement_amt AS "agreementAmt",
+		a.planned_start_time AS "plannedStartTime",
+		a.pre_sales AS "preSales",
+		a.on_sales AS "onSales",
+		a.created_user AS "createdUser",
+		a.created_time AS "createdTime",
+		a.updated_user AS "updatedUser",
+		a.updated_time AS "updatedTime",
+		a.ext1 AS "ext1",
+		a.ext2 AS "ext2",
+		a.ext3 AS "ext3",
+		a.ext4 AS "ext4",
+		a.ext5 AS "ext5"
+	</sql>
+	
+	<sql id="salesLeadInfoJoins">
+	</sql>
+    
+	<select id="get" resultType="SalesLeadInfo">
+		SELECT 
+			<include refid="salesLeadInfoColumns"/>
+		FROM sales_lead_info a
+		<include refid="salesLeadInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SalesLeadInfo">
+		SELECT 
+			<include refid="salesLeadInfoColumns"/>
+		FROM sales_lead_info a
+		<include refid="salesLeadInfoJoins"/>
+		<where>
+			
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
+			</if>
+			<if test="contactName != null and contactName != ''">
+				AND a.contact_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{contactName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contactName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contactName},'%')</if>
+			</if>
+			<if test="principal != null and principal != ''">
+				AND a.principal LIKE 
+					<if test="dbName == 'oracle'">'%'||#{principal}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{principal}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{principal},'%')</if>
+			</if>
+			<if test="leadStatus != null and leadStatus != ''">
+				AND a.lead_status = #{leadStatus}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SalesLeadInfo">
+		SELECT 
+			<include refid="salesLeadInfoColumns"/>
+		FROM sales_lead_info a
+		<include refid="salesLeadInfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sales_lead_info(
+			lead_id,
+			company_id,
+			company_name,
+			contact_id,
+			contact_name,
+			principal,
+			biz_line,
+			product_id,
+			leads_src,
+			leads_desc,
+			lead_status,
+			estimate_amt,
+			agreement_amt,
+			planned_start_time,
+			pre_sales,
+			on_sales,
+			created_user,
+			created_time,
+			updated_user,
+			updated_time,
+			ext1,
+			ext2,
+			ext3,
+			ext4,
+			ext5
+		) VALUES (
+			#{leadId},
+			#{companyId},
+			#{companyName},
+			#{contactId},
+			#{contactName},
+			#{principal},
+			#{bizLine},
+			#{productId},
+			#{leadsSrc},
+			#{leadsDesc},
+			#{leadStatus},
+			#{estimateAmt},
+			#{agreementAmt},
+			#{plannedStartTime},
+			#{preSales},
+			#{onSales},
+			#{createdUser},
+			#{createdTime},
+			#{updatedUser},
+			#{updatedTime},
+			#{ext1},
+			#{ext2},
+			#{ext3},
+			#{ext4},
+			#{ext5}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sales_lead_info SET 	
+			company_id = #{companyId},
+			company_name = #{companyName},
+			contact_id = #{contactId},
+			contact_name = #{contactName},
+			principal = #{principal},
+			biz_line = #{bizLine},
+			product_id = #{productId},
+			leads_src = #{leadsSrc},
+			leads_desc = #{leadsDesc},
+			lead_status = #{leadStatus},
+			estimate_amt = #{estimateAmt},
+			agreement_amt = #{agreementAmt},
+			planned_start_time = #{plannedStartTime},
+			pre_sales = #{preSales},
+			on_sales = #{onSales},
+			created_user = #{createdUser},
+			created_time = #{createdTime},
+			updated_user = #{updatedUser},
+			updated_time = #{updatedTime},
+			ext1 = #{ext1},
+			ext2 = #{ext2},
+			ext3 = #{ext3},
+			ext4 = #{ext4},
+			ext5 = #{ext5}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sales_lead_info
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

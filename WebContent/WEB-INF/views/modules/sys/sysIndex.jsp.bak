@@ -1,0 +1,264 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE  html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<title>${fns:getConfig('productName')}</title>
+	   <meta name="decorator" content="admin_basic"/>
+		
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- basic styles -->
+		<link rel="stylesheet" href="${ctxStatic}/oa/bootstrap/css/bootstrap.min.css"  />
+		<link rel="stylesheet" href="${ctxStatic}/oa/awesome/css/font-awesome.min.css" />
+
+		<!--[if IE 7]>
+		<link rel="stylesheet" href="${ctxStatic}/oa/awesome/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+		<link rel="stylesheet" href="${ctxStatic}/oa/jquery/plugin/css/jquery.gritter.css" />
+		
+
+		<!-- fonts -->
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="${ctxStatic}/oa/ace/css/uncompressed/ace.css" />
+		<link rel="stylesheet" href="${ctxStatic}/oa/ace/css/uncompressed/ace-rtl.css" />
+		<link rel="stylesheet" href="${ctxStatic}/oa/ace/css/uncompressed/ace-skins.css" />
+
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="${ctxStatic}/oa/ace/css/uncompressed/ace-ie.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+		<link rel="stylesheet" href="${ctxStatic}/oa/home/css/style.css" />
+		<!-- ace settings handler -->
+
+		<script src="${ctxStatic}/oa/ace/js/ace-extra.min.js"></script>
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="${ctxStatic}/oa/asst/html5shiv.js"></script>
+		<script src="${ctxStatic}/oa/asst/respond.min.js"></script>
+		<![endif]-->
+		
+				<!-- ace scripts -->
+    
+	</head>
+	
+<script type="text/javascript">	
+
+ $(function(){ 
+ 	var cid = $('#nav_list> li>.submenu');
+	 cid.each(function(i){ 
+       $(this).attr('id',"Sort_link_"+i);
+     });
+	 getNotifyNum();
+ });
+ $(document).ready(function(){ 	
+    $.each($(".submenu"),function(){
+		var $aobjs=$(this).children("li");
+		var rowCount=$aobjs.size();
+		var divHeigth=$(this).height();
+	    $aobjs.height(divHeigth/rowCount);	  	
+ 	 }); 
+ 	  alert();
+    //初始化宽度、高度
+    $("#main-container").height($(window).height()-76); 
+	$("#iframe").height($(window).height()-140); 
+	
+	$(".sidebar").height($(window).height()-99); 
+    var thisHeight = $("#nav_list").height($(window).outerHeight()-173); 
+	$(".submenu").height();
+	$("#nav_list").children(".submenu").css("height",thisHeight);
+	
+    //当文档窗口发生改变时 触发  
+    $(window).resize(function(){
+		$("#main-container").height($(window).height()-76); 
+		$("#iframe").height($(window).height()-140);
+		$(".sidebar").height($(window).height()-99); 
+		
+		var thisHeight = $("#nav_list").height($(window).outerHeight()-173); 
+		$(".submenu").height();
+		$("#nav_list").children(".submenu").css("height",thisHeight);
+    });
+    $(".iframeurl").click(function(){
+        var cid = $(this).attr("name");
+		var cname = $(this).attr("title");
+        $("#iframe").attr("src",cid).ready();
+		$("#Bcrumbs").attr("href",cid).ready();
+		$(".Current_page a").attr('href',cid).ready();	
+        $(".Current_page").attr('name',cid);
+		$(".Current_page").html(cname).css({"color":"#333333","cursor":"default"}).ready();	
+		$("#parentIframe").html('<span class="parentIframe iframeurl"> </span>').css("display","none").ready();	
+		$("#parentIfour").html(''). css("display","none").ready();		
+    });	
+ });
+
+/*********************点击事件*********************/
+	$(document).ready(function(){
+		
+	  	$('#firstIndex').click(function(){
+	  		$('#nav_list').find('li.home').removeClass('active');
+	  		$(this).addClass('active');
+	  	});		
+	  	$('#firstIndex').click();
+	
+	
+	    $('#Exit_system').on('click', function(){
+	      layer.confirm('是否确定退出系统？', {
+	     btn: ['是','否'] ,//按钮
+		 icon:2,
+	    }, 
+		function(){
+		  location.href="${ctx}/logout";
+	    });
+	});
+})
+</script>
+	
+
+	<body class="User">
+		<div class="shade"></div>
+		
+			<nav class="navbar navbar-default " role="navigation">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
+			<span class="sr-only">Toggle navigation</span>
+			<i class="fa fa-bars fa-lg"></i>
+		</button>
+		<div class="hidden-xs">
+			&nbsp;
+		</div>
+		<a href="index.php?m=&c=index&a=index" class="navbar-brand"><i class="fa fa-leaf"></i>${fns:getConfig('productName')}</a>
+	</div>
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="navbar-collapse-6">
+		<ul class="nav navbar-nav navbar-right" id="nav_list">
+		
+		<!-- 
+			<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Mail&a=index" node="85" onclick="click_top_menu(this)" > <i class="fa fa-envelope-o bc-mail bigger-100"></i>邮件				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Flow&a=index" node="87" onclick="click_top_menu(this)" > <i class="fa fa-pencil bc-flow bigger-100"></i>审批				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Info&a=index##" node="88" onclick="click_top_menu(this)" > <i class="fa fa-file-o bigger-100"></i>信息				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Doc&a=index##" node="221" onclick="click_top_menu(this)" > <i class="fa fa-inbox bigger-100"></i>文档				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Form&a=index##" node="226" onclick="click_top_menu(this)" > <i class="fa fa-table bigger-100"></i>报表				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=WorkLog&a=index" node="217" onclick="click_top_menu(this)" > <i class="fa fa-book bigger-100"></i>工作				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Staff&a=index" node="157" onclick="click_top_menu(this)" > <i class="fa fa-group bigger-100"></i>通讯录				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=Contact&a=index" node="198" onclick="click_top_menu(this)" > <i class="fa fa-user bc-personal bigger-100"></i>个人				</a>&nbsp;&nbsp;<a class="btn btn-app app-nav btn-xs nav-app"  href="#" url="index.php?m=&c=User&a=index" node="84" onclick="click_top_menu(this)" > <i class="fa fa-cogs bigger-100"></i>管理				</a>&nbsp;&nbsp;<a class="btn btn-app btn-xs btn-danger" style="margin-top:15px;margin-bottom:20px;margin-left:7px;margin-right:10px;" href="index.php?m=&c=public&a=logout" ><i class="fa fa-sign-out bigger-100"></i>退出</a>
+		 -->
+		 
+		 <c:set var="firstMenu" value="true"/>
+                    <c:if test="${!empty param.parentId}">
+                        <c:set var="firstMenuId" value="${param.parentId}"/>
+                        <c:set var="firstMenu" value="false"/>
+                    </c:if>
+
+                    <c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+                        <c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}">
+                          
+                                <c:if test="${empty menu.href}">
+                                    <a class="btn btn-app app-nav btn-xs nav-app ${menu.id eq param.parentId ? ' active' : ''}"  href="?parentId=${menu.id}"
+                                       data-id="${menu.id}"><i class="${menu.icon} fa fa-envelope-o bc-mail bigger-100"></i>${menu.name} </a>&nbsp;&nbsp;
+                                </c:if>
+                                <c:if test="${not empty menu.href}">
+                                    <a class="btn btn-app app-nav btn-xs nav-app ${menu.id eq param.parentId ? ' active' : ''}" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}"
+                                       data-id="${menu.id}" target="mainFrame"><i class="${menu.icon} fa fa-envelope-o bc-mail bigger-100"></i>${menu.name}</a>&nbsp;&nbsp;
+                                </c:if>
+                            
+                            <c:if test="${firstMenu}">
+                                <c:set var="firstMenuId" value="${menu.id}"/>
+                            </c:if>
+                            <c:set var="firstMenu" value="false"/>
+                        </c:if>
+                    </c:forEach>
+			
+			   <a class="btn btn-app btn-xs btn-danger" style="margin-top:15px;margin-bottom:20px;margin-left:7px;margin-right:10px;" href="{:U('public/logout')}" ><i class="fa fa-sign-out bigger-100"></i>退出</a>
+		</ul>
+	</div><!-- /.navbar-collapse -->
+</nav>
+			<div class="main-container" id="main-container" >
+			<div class="main-container-inner">
+				<div class="sidebar" id="sidebar">
+					<div id="user_info" class="text-center hidden-xs"  >
+						<span >当前用户：管理员</span>
+					</div>
+					<div id="nav_head" class="text-center" onclick="toggle_left_menu()">
+						<span class="menu-text">管理</span>
+						<b id="left_menu_icon" class="fa fa-angle-down pull-right"></b>
+					</div>
+					<ul id='left_menu' class='nav nav-list'>
+<c:set var="firstMenu" value="true"/>
+						
+						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+							<!-- 如果一级菜单含有链接，则直接展示一级菜单跳转，不展示下级菜单 -->
+							<c:if test="${not empty menu.href && menu.parent.id eq '1' && menu.isShow eq '1'}">
+								<c:choose>
+									<c:when test="${firstMenu}">  
+										<li class="home" ><a id="firstIndex"  href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${not empty menu.href ? menu.href : '/404'}" target="iframe" title="${menu.name}" class="iframeurl"><i class="icon-dashboard"></i>${menu.name}</a></li>
+										<c:set var="firstMenu" value="false"/>  
+									</c:when>
+									<c:otherwise>
+										<li class="home"><a  href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu.href : '/404'}"  title="${menu.name}" target="iframe" class="iframeurl"><i class="fa fa-angle-right"></i>${menu.name}</a></li>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+							<!-- 如果一级菜单不含有链接，则展示二级菜单跳转 -->
+							  <c:if test="${empty menu.href && menu.parent.id eq firstMenuId &&menu.isShow eq '1'}">
+								<li><a href="#" class="dropdown-toggle"><i class="icon-${menu.icon}"></i><span class="menu-text"> ${menu.name} </span><b class="arrow icon-angle-down"></b></a>
+									<ul class="submenu">
+										<c:forEach items="${menuList}" var="menu2">
+											<c:if test="${menu2.parent.id eq menu.id&&menu2.isShow eq '1'}">
+												<c:choose>
+												   <c:when test="${firstMenu}">  
+														<li class="home" ><a id="firstIndex"  href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" target="iframe" title="${menu2.name}" class="iframeurl"><i class="fa fa-angle-right icon-double-angle-right"></i>${menu2.name}</a></li>
+														<c:set var="firstMenu" value="false"/>  
+												   </c:when>
+												   <c:otherwise> 
+														<li class="home"><a id="firstIndex"  href="${fn:indexOf(menu2.href, '://') eq -1 ? ctx : ''}${not empty menu2.href ? menu2.href : '/404'}" target="iframe" title="${menu2.name}" class="iframeurl"><i class="fa fa-angle-right"></i>${menu2.name}</a></li>
+												   </c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</ul>
+								</li>
+							</c:if>
+							  <c:if test="${not empty menu.href && menu.parent.id eq firstMenuId &&menu.isShow eq '1'}">
+							<%--   <li><a href="javascript:void(0)" class="dropdown-toggle" class="iframeurl" name="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${not empty menu.href ? menu.href : '/404'}" ><i class="icon-${menu.icon}"></i><span class="menu-text"> ${menu.name} </span><b class="arrow icon-angle-down"></b></a>
+							 --%>	
+							 <li class="home" ><a  id="firstIndex"  href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${not empty menu.href ? menu.href : '/404'}"  title="${menu.name}"  target="iframe" class="iframeurl"><i class="fa fa-angle-right"></i>${menu.name}</a></li>
+							 
+							  </c:if>
+						</c:forEach>
+					
+</ul>
+				</div>
+				
+				<div class="main-content">
+					<div class="breadcrumbs" id="breadcrumbs">
+						<ul class="breadcrumb">
+							<li>
+								<i class="fa fa-home home-icon"></i>
+								<a href="/">Home</a>
+							</li>
+							<li class="active"><span class="Current_page iframeurl"></span></li>
+                           <li class="active" id="parentIframe"><span class="parentIframe iframeurl"></span></li>
+						<li class="active" id="parentIfour"><span class="parentIfour iframeurl"></span></li>
+
+						</ul><!-- .breadcrumb -->
+					</div>
+				<!-- 	<div class="page-content"> -->
+						    <iframe id="iframe" style="border:0; width:100%; background-color:#FFF;" name="iframe" src="" frameborder="0" src="">  </iframe>
+			
+					<!-- </div> --><!-- /.page-content -->
+				</div><!-- /.main-content -->
+			</div><!-- /#ace-settings-container -->
+		</div><!-- /.main-container-inner -->
+		
+		
+				
+         	 
+
+		
+		
+	
+
+	</body>
+</html>
